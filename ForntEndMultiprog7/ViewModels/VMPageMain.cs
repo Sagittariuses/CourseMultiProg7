@@ -245,7 +245,7 @@ namespace ForntEndMultiprog7.ViewModels
         //
         // other type
         //
-        public ObservableCollection<VMDevice> OcVMDevice { get { return ocVMDevice; } }
+        //public ObservableCollection<VMDevice> OcVMDevice { get { return ocVMDevice; } }
        
 
         #endregion
@@ -538,8 +538,8 @@ namespace ForntEndMultiprog7.ViewModels
 
         public void FillOc(VMDevice vMDevice)
         {
-            OcVMDevice.Add(vMDevice);
-            OnPropertyChanged(nameof(OcVMDevice));
+           /* OcVMDevice.Add(vMDevice);
+            OnPropertyChanged(nameof(OcVMDevice));*/
         }
     }
 

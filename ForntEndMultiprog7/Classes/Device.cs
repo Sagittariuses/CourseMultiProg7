@@ -19,9 +19,9 @@ namespace ForntEndMultiprog7.Model
 
         public static void SendReadAsk(byte CanID)
         {
-            VMPageMain.Driver.SendPack(new LKDSFramework.Packs.DataDirect.IAPService.PackV7IAPReadAsk()
+            PageMain.Driver.SendPack(new LKDSFramework.Packs.DataDirect.IAPService.PackV7IAPReadAsk()
             {
-                UnitID = VMPageMain.Driver.Devices[0].UnitID,
+                UnitID = PageMain.Driver.Devices[0].UnitID,
                 CanID = CanID,
                 Num = 2
             });

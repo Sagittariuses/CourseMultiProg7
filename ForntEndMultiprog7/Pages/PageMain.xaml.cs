@@ -2,6 +2,7 @@
 using FrontEndMultiprog7.Windows;
 using LKDSFramework;
 using LKDSFramework.Packs;
+using Multiprog7.Windows;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -164,6 +165,11 @@ namespace ForntEndMultiprog7.Pages
             OnlineActive = false;
             OfflineActive = true;
             ManualActive = false;
+
+            WndOfflineMode wndOffline = new WndOfflineMode();
+            wndOffline.ShowDialog();
+
+
         }
 
         private void BtnManualMode_Click(object sender, RoutedEventArgs e)

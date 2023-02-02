@@ -231,7 +231,7 @@
 
             <Border Grid.Row="1" BorderThickness="0,1,0,1" BorderBrush="#EAEEF1" Margin="25,0,0,0">
                 <Grid>
-                    <Grid x:Name="GridChooseFwFirst" Grid.Row="1" Visibility="Visible">
+                    <Grid x:Name="GridChooseFwFirst" Grid.Row="1" Visibility="Hidden">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="40"></ColumnDefinition>
                             <ColumnDefinition></ColumnDefinition>
@@ -261,7 +261,7 @@
                      Click="BtnChooseFwFilePlusFirst_Click"/>
 
                     </Grid>
-                    <Grid x:Name="GridFwFirst" Visibility="Hidden"
+                    <Grid x:Name="GridFwFirst" Visibility="Visible"
                         Grid.Row="1" 
                         Background="#F8F9FB">
                         <Grid.ColumnDefinitions>

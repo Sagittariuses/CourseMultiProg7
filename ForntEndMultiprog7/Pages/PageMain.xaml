@@ -162,16 +162,14 @@
                     x:Name="LVCanDevList"
                     Grid.Row="1"
                     BorderThickness="0"
-                    SelectionChanged="LVCanDevList_SelectionChanged"
-                    >
+                    SelectionChanged="LVCanDevList_SelectionChanged">
                     <ListView.View>
                         <GridView>
-                            <GridViewColumn DisplayMemberBinding="{Binding CanID}"      Header="ID Can" />
-                            <GridViewColumn DisplayMemberBinding="{Binding Title}"      Header="Наименование" Width="120" />
+                            <GridViewColumn DisplayMemberBinding="{Binding CanID}"      Header="ID Can" Width="75" />
+                            <GridViewColumn DisplayMemberBinding="{Binding Title}"      Header="Наименование" Width="150" />
                             <GridViewColumn DisplayMemberBinding="{Binding AppVer}"     Header="Программная версия" Width="160"/>
-                            <GridViewColumn DisplayMemberBinding="{Binding FWTitle}"    Header="Название прошивки" Width="150"/>
+                            <GridViewColumn DisplayMemberBinding="{Binding FWTitle}"    Header="Название прошивки" Width="200"/>
                             <GridViewColumn DisplayMemberBinding="{Binding FWVersion}"  Header="Версия прошивки" Width="140"/>
-                            <GridViewColumn DisplayMemberBinding="{Binding FWDate}"     Header="Дата выпуска" Width="110" />
                         </GridView>
                     </ListView.View>
                     <ListView.ItemContainerStyle>

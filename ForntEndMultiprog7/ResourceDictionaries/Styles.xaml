@@ -113,12 +113,12 @@
     <Style x:Key="ManualMode" TargetType="GridViewColumnHeader">
         <Setter Property="Background" Value="{x:Null}"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
-        <Setter Property="VerticalContentAlignment" Value="Center"/>
-        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
         <Setter Property="FontSize" Value="12"/>
         <Setter Property="Height" Value="25"/>
-        <Setter Property="Padding" Value="10,0"/>
-        <Setter Property="Width" Value="Auto"/>
+        <Setter Property="Padding" Value="5,0"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="GridViewColumnHeader">

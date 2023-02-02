@@ -38,7 +38,7 @@ namespace FrontEndMultiprog7.Windows
             Close();
         }
 
-        private void BtnChooseFwFile_Click(object sender, RoutedEventArgs e)
+        private void BtnChooseFwFilePlusFirst_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog opd = new OpenFileDialog();
             opd.Filter = VMPageMain.FileExt;
@@ -52,6 +52,53 @@ namespace FrontEndMultiprog7.Windows
                 VMPageMain.FileFW = opd.FileName;
                 MessageBox.Show(VMPageMain.FileFW);
             }
+        }
+
+        private void BtnChooseFwFilePlusSecond_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog opd = new OpenFileDialog();
+            opd.Filter = VMPageMain.FileExt;
+
+            Nullable<bool> result = opd.ShowDialog();
+
+
+            // Get the selected file name and display in a TextBox 
+            if (result == true)
+            {
+                VMPageMain.FileFW = opd.FileName;
+                MessageBox.Show(VMPageMain.FileFW);
+            }
+        }
+
+        private void BtnChooseFwFilePlusThird_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog opd = new OpenFileDialog();
+            opd.Filter = VMPageMain.FileExt;
+
+            Nullable<bool> result = opd.ShowDialog();
+
+
+            // Get the selected file name and display in a TextBox 
+            if (result == true)
+            {
+                VMPageMain.FileFW = opd.FileName;
+                MessageBox.Show(VMPageMain.FileFW);
+            }
+        }
+
+        private void BtnClearFirmwareThird_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void BtnClearFirmwareSecond_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void BtnClearFirmwareFirst_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

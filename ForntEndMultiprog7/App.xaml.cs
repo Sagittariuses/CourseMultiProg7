@@ -1,4 +1,5 @@
-﻿using LKDSFramework;
+﻿using FrontEndMultiprog7.Windows;
+using LKDSFramework;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -18,7 +19,10 @@ namespace ForntEndMultiprog7
         static bool SimpleFlag = false;
         [STAThread]
         private void Application_Startup(object sender, StartupEventArgs e)
-            {
+        {
+            /*WndManualMode wndManual = new WndManualMode();
+            wndManual.Show();*/
+
             MainWindow wnd = new MainWindow();
             Args = e.Args;
             wnd.Show();

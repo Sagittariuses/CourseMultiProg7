@@ -17,13 +17,12 @@
             <RowDefinition Height="38"></RowDefinition>
             <RowDefinition Height="10"></RowDefinition>
             <RowDefinition Height="10"></RowDefinition>
+            <RowDefinition Height="141"></RowDefinition>
+            <RowDefinition Height="15"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0">
-            <Grid.ColumnDefinitions>
-            </Grid.ColumnDefinitions>
-
             <Label
 		        VerticalAlignment="Center"
 		        FontSize="14"
@@ -40,12 +39,13 @@
                     </Style>
                 </Label.Style>
             </Label>
+
             <Button
                 x:Name="BtnMinimezeBox"
                 Content="–"
                 Grid.Row="0"
-                HorizontalAlignment="Stretch"
-                Margin="518,4,40,0"
+                HorizontalAlignment="Right"
+                Margin="2,2,42,2"
                 FontSize="28"
                 FontWeight="Bold"
                 IsEnabled="True"
@@ -53,7 +53,7 @@
                 Width="40"
                 BorderThickness="0"  
                 Foreground="#828282"
-                Click="BtnMinimezeBox_Click">
+                Click="BtnMinimezeBox_Click" VerticalAlignment="Top">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
                         <Setter Property="Background" Value="Transparent"/>
@@ -102,16 +102,16 @@
             <Button
                 x:Name="BtnCloseBox"
                 Content="✖"
-                Margin="560,4,0,0"
+                Margin="2"
                 Grid.Row="0"
                 FontSize="12"
                 IsEnabled="True"
                 Height="34"
                 Width="40"
-                HorizontalAlignment="Left"
+                HorizontalAlignment="Right"
                 Foreground="#828282"
                 BorderThickness="0"
-                Click="BtnCloseBox_Click" >
+                Click="BtnCloseBox_Click" VerticalAlignment="Top" >
                 <Button.Style>
                     <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
                         <Setter Property="Background" Value="Transparent"/>
@@ -231,7 +231,7 @@
 
             <Border Grid.Row="1" BorderThickness="0,1,0,1" BorderBrush="#EAEEF1" Margin="25,0,0,0">
                 <Grid>
-                    <Grid x:Name="GridChooseFwFirst" Grid.Row="1" Visibility="Hidden">
+                    <Grid x:Name="GridChooseFwFirst" Grid.Row="1" Visibility="Visible">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="40"></ColumnDefinition>
                             <ColumnDefinition></ColumnDefinition>
@@ -261,7 +261,7 @@
                      Click="BtnChooseFwFilePlusFirst_Click"/>
 
                     </Grid>
-                    <Grid x:Name="GridFwFirst" Visibility="Visible"
+                    <Grid x:Name="GridFwFirst" Visibility="Hidden"
                         Grid.Row="1" 
                         Background="#F8F9FB">
                         <Grid.ColumnDefinitions>
@@ -274,46 +274,46 @@
                             <ColumnDefinition Width="65*"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
                         <Label Content="▢"
-                       Grid.Column="0"
-                       Foreground="#828282" 
-                       FontSize="16" 
-                       FontWeight="Black"
-                       Margin="0,5,0,0"/>
+                           Grid.Column="0"
+                           Foreground="#828282" 
+                           FontSize="16" 
+                           FontWeight="Black"
+                           Margin="0,5,0,0"/>
                         <Label x:Name="LbFwFilenameFirst"
-                       Content="Filename" 
-                       Grid.Column="1"
-                       Foreground="#333333" 
-                       FontSize="16" 
-                       FontWeight="Normal"
-                       Margin="0,5,0,0"/>
+                           Content="Filename" 
+                           Grid.Column="1"
+                           Foreground="#333333" 
+                           FontSize="16" 
+                           FontWeight="Normal"
+                           Margin="0,5,0,0"/>
                         <Label x:Name="LbFwVerFirst"
-                       Content="00.00.00" 
-                       Grid.Column="2"
-                       Foreground="#333333" 
-                       FontSize="16" 
-                       FontWeight="Normal"
-                       Margin="0,5,0,0"/>
+                           Content="00.00.00" 
+                           Grid.Column="2"
+                           Foreground="#333333" 
+                           FontSize="16" 
+                           FontWeight="Normal"
+                           Margin="0,5,0,0"/>
                         <Label x:Name="LbFwDateFirst"
-                       Content="01.01.01" 
-                       Grid.Column="3"
-                       Foreground="#333333" 
-                       FontSize="16" 
-                       FontWeight="Normal"
-                       Margin="0,5,0,0"/>
+                           Content="01.01.01" 
+                           Grid.Column="3"
+                           Foreground="#333333" 
+                           FontSize="16" 
+                           FontWeight="Normal"
+                           Margin="0,5,0,0"/>
                         <Label x:Name="LbFwTimeFirst"
-                       Content="00:00:00" 
-                       Grid.Column="4"
-                       Foreground="#333333" 
-                       FontSize="16" 
-                       FontWeight="Normal"
-                       Margin="0,5,0,0"/>
+                           Content="00:00:00" 
+                           Grid.Column="4"
+                           Foreground="#333333" 
+                           FontSize="16" 
+                           FontWeight="Normal"
+                           Margin="0,5,0,0"/>
                         <Label x:Name="LbFwExecutionFirst"
-                       Content="Персональное" 
-                       Grid.Column="5"
-                       Foreground="#333333" 
-                       FontSize="16" 
-                       FontWeight="Normal"
-                       Margin="1,5,0,0"/>
+                           Content="Персональное" 
+                           Grid.Column="5"
+                           Foreground="#333333" 
+                           FontSize="16" 
+                           FontWeight="Normal"
+                           Margin="1,5,0,0"/>
                         <Button 
                             x:Name="BtnClearFirmwareFirst"
                             Grid.Column="6" 
@@ -322,7 +322,7 @@
                             Click="BtnClearFirmwareFirst_Click">
                             <Path
                                 Fill="#486FEF"
-                                Data="M3.99998 12.6667C3.99998 13.0203 4.14046 13.3594 4.3905 13.6095C4.64055 13.8595 4.97969 14 5.33331 14H10.6666C11.0203 14 11.3594 13.8595 11.6095 13.6095C11.8595 13.3594 12 13.0203 12 12.6667V4.66667H3.99998V12.6667ZM5.33331 6H10.6666V12.6667H5.33331V6ZM10.3333 2.66667L9.66665 2H6.33331L5.66665 2.66667H3.33331V4H12.6666V2.66667H10.3333Z"/>
+                                Data="M3.99998 12.6667C3.99998 13.0203 4.14046 13.3594 4.3905 13.6095C4.64055 13.8595 4.97969 14 5.33331 14H10.6666C11.0203 14 11.3594 13.8595 11.6095 13.6095C11.8595 13.3594 12 13.0203 12 12.6667V4.66667H3.99998V12.6667ZM5.33331 6H10.6666V12.6667H5.33331V6ZM10.3333 2.66667L9.66665 2H6.33331L5.66665 2.66667H3.33331V4H12.6666V2.66667H10.3333Z"  Width="15" Height="15"/>
                         </Button>
                     </Grid>
                 </Grid>
@@ -418,7 +418,7 @@
                             BorderThickness="0"
                             Click="BtnClearFirmwareSecond_Click">
                             <Path Fill="#486FEF"
-                                 Data="M3.99998 12.6667C3.99998 13.0203 4.14046 13.3594 4.3905 13.6095C4.64055 13.8595 4.97969 14 5.33331 14H10.6666C11.0203 14 11.3594 13.8595 11.6095 13.6095C11.8595 13.3594 12 13.0203 12 12.6667V4.66667H3.99998V12.6667ZM5.33331 6H10.6666V12.6667H5.33331V6ZM10.3333 2.66667L9.66665 2H6.33331L5.66665 2.66667H3.33331V4H12.6666V2.66667H10.3333Z"/>
+                                 Data="M3.99998 12.6667C3.99998 13.0203 4.14046 13.3594 4.3905 13.6095C4.64055 13.8595 4.97969 14 5.33331 14H10.6666C11.0203 14 11.3594 13.8595 11.6095 13.6095C11.8595 13.3594 12 13.0203 12 12.6667V4.66667H3.99998V12.6667ZM5.33331 6H10.6666V12.6667H5.33331V6ZM10.3333 2.66667L9.66665 2H6.33331L5.66665 2.66667H3.33331V4H12.6666V2.66667H10.3333Z" Width="15" Height="15"/>
                         </Button>
                     </Grid>
                 </Grid>
@@ -472,7 +472,7 @@
                        FontSize="16" 
                        FontWeight="Black"
                        Margin="0,5,0,0"/>
-                        <Label x:Name="LbFwFilenamThird"
+                        <Label x:Name="LbFwFilenameThird"
                        Content="Filename" 
                        Grid.Column="1"
                        Foreground="#333333" 
@@ -515,7 +515,7 @@
                             Click="BtnClearFirmwareThird_Click">
                             <Path
                         Fill="#486FEF"
-                        Data="M3.99998 12.6667C3.99998 13.0203 4.14046 13.3594 4.3905 13.6095C4.64055 13.8595 4.97969 14 5.33331 14H10.6666C11.0203 14 11.3594 13.8595 11.6095 13.6095C11.8595 13.3594 12 13.0203 12 12.6667V4.66667H3.99998V12.6667ZM5.33331 6H10.6666V12.6667H5.33331V6ZM10.3333 2.66667L9.66665 2H6.33331L5.66665 2.66667H3.33331V4H12.6666V2.66667H10.3333Z"/>
+                        Data="M3.99998 12.6667C3.99998 13.0203 4.14046 13.3594 4.3905 13.6095C4.64055 13.8595 4.97969 14 5.33331 14H10.6666C11.0203 14 11.3594 13.8595 11.6095 13.6095C11.8595 13.3594 12 13.0203 12 12.6667V4.66667H3.99998V12.6667ZM5.33331 6H10.6666V12.6667H5.33331V6ZM10.3333 2.66667L9.66665 2H6.33331L5.66665 2.66667H3.33331V4H12.6666V2.66667H10.3333Z" Width="15" Height="15"/>
                         </Button>
                     </Grid>
                 </Grid>
@@ -524,6 +524,16 @@
 
         </Grid>
 
+        <Grid Grid.Row="5">
+            <Button
+                x:Name="BtnApply"
+                Content="Применить"
+                Grid.Column="1"
+                Margin="207,10,207,10"
+                Style="{StaticResource BtnActiveMode}"  
+                Click="BtnApply_Click">
+            </Button>
+        </Grid>
 
     </Grid>
 

@@ -1,4 +1,7 @@
-﻿using System;
+﻿using ForntEndMultiprog7.Pages;
+using ForntEndMultiprog7.ViewModels;
+using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -41,9 +44,23 @@ namespace Multiprog7.Windows
 
         private void BtnOpenFolder_Click(object sender, RoutedEventArgs e)
         {
-            //
-            // OpenFileDialog, брать путь к архиву с прашивками
-            // 
+            OpenFileDialog opd = new OpenFileDialog();
+            opd.Filter = $"Файлы прошивки ({PageMain.FileExt}) | {PageMain.FileExt}";
+            opd.Title = "Выбор прошивки";
+
+            Nullable<bool> result = opd.ShowDialog();
+
+
+            // Get the selected file name and display in a TextBox 
+            if (result == true)
+            {
+                LbArchivePath.Content = opd.FileName;
+                PageMain.FwArchivePath= opd.FileName;
+
+
+
+
+            }
         }
     }
 }

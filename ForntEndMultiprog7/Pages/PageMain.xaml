@@ -100,7 +100,8 @@
                                 x:Name="PbMain"
                                 Maximum="1"
                                 Value="0"
-                                Foreground="#486FEF">
+                                Foreground="#486FEF"
+                                ValueChanged="PbMain_ValueChanged">
                             </ProgressBar>
                         </Border>
                     </Grid>

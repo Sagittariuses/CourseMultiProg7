@@ -1,5 +1,6 @@
 ﻿using FrontEndMultiprog7.Windows;
 using LKDSFramework;
+using Multiprog7.Windows;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -21,7 +22,8 @@ namespace ForntEndMultiprog7
         private void Application_Startup(object sender, StartupEventArgs e)
         {
             /*WndManualMode wndManual = new WndManualMode();
-            wndManual.Show();*/
+            wndManual.Show();
+*/
 
             MainWindow wnd = new MainWindow();
             Args = e.Args;

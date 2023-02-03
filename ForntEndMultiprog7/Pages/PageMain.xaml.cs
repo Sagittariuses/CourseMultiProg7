@@ -59,9 +59,13 @@ namespace ForntEndMultiprog7.Pages
   
         public static string FileExt;
         public static string FileFW;
+        public static string FwArchivePath;
+
+
 
         private string labelContentUpdate = "Обновление";
         private string labelContentAnalyze = "Анализ";
+
 
         private string styleActiveMode = "BtnActiveMode";
         private string styleInactiveMode = "BtnInactiveMode";
@@ -101,7 +105,7 @@ namespace ForntEndMultiprog7.Pages
         Stopwatch stopwatch = new Stopwatch();
 
         ResourceDictionary Styles = (ResourceDictionary)Application.LoadComponent(
-            new Uri("/ForntEndMultiprog7;component/DictionaryStyles/Styles.xaml", UriKind.Relative));
+            new Uri("/MultiProg7;component/ResourceDictionaries/Styles.xaml", UriKind.Relative));
 
         public ObservableCollection<VMDevice> OcVMDev;
 
@@ -166,8 +170,7 @@ namespace ForntEndMultiprog7.Pages
             OfflineActive = true;
             ManualActive = false;
 
-            WndOfflineMode wndOffline = new WndOfflineMode();
-            wndOffline.ShowDialog();
+
 
 
         }
@@ -420,30 +423,65 @@ namespace ForntEndMultiprog7.Pages
                 // Нужно сверстать окно, подготовка к диплому
                 //
                 // 
-                /*WndOfflineMode wndOfflineMode = new WndOfflineMode();
-                wndOfflineMode.ShowDialog();*/
+                WndOfflineMode wndOfflineMode = new WndOfflineMode();
+                wndOfflineMode.ShowDialog();
             }
             else if (ManualActive)
             {
+                MessageBox.Show(FileExt);
                 WndManualMode wndManualMode = new WndManualMode();
                 wndManualMode.ShowDialog();
-                // Доверстать окно
-                //
+
+                if (WndManualMode.IsApplied)
+                {
+                    //
+                    //  Начать обновление
+                    //
+                }
             }
         }
 
         private void LVCanDevList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (!LVCanDevList.SelectedItem.Equals(null))
+            if (PbMain.Value.Equals(PbMain.Maximum))
             {
-                BtnUpdate.IsEnabled = true;
-                BtnUpdate.Style = (Style)Styles[styleUpdateEnable];
+                if (!LVCanDevList.SelectedItem.Equals(null))
+                {
+                    BtnUpdate.IsEnabled = true;
+                    BtnUpdate.Style = (Style)Styles[styleUpdateEnable];
+                    SelectedDevOrSubDevCANID = (byte)(LVCanDevList.SelectedItem as VMDevice).CanID;
+
+                    if (SelectedDevOrSubDevCANID.Equals(0))
+                    {
+                        Driver.Devices[0].SendPack(new LKDSFramework.Packs.DataDirect.IAPService.PackV7IAPStateAsk());
+                        //IsLiftBlock = true;
+                    }
+                    else
+                    {
+                        Driver.Devices[0].SubDevices[SelectedDevOrSubDevCANID].SendPack(new LKDSFramework.Packs.DataDirect.IAPService.PackV7IAPStateAsk());
+                        //IsLiftBlock = false;
+                    }
+                }
+                else
+                {
+                    BtnUpdate.IsEnabled = false;
+                    BtnUpdate.Style = (Style)Styles[styleUpdateDisable];
+                }
             }
-            else
+
+            
+        }
+
+        private void PbMain_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            
+            /*if (!LVCanDevList.Items.Count.Equals(0) && LVCanDevList.Items.Count.Equals(Convert.ToInt64(LbDevCount.Content)))
             {
-                BtnUpdate.IsEnabled = false;
-                BtnUpdate.Style = (Style)Styles[styleUpdateDisable];
-            }
+                PbMain.Value = PbMain.Maximum;
+            } else
+            {
+                PbMain.Value++;
+            }*/
         }
 
         #endregion

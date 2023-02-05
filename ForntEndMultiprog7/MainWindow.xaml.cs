@@ -45,7 +45,7 @@ namespace ForntEndMultiprog7
                         }
 
 
-                        FrameMain.Content = new Pages.PageMain();
+                        //FrameMain.Content = new Pages.PageMain();
                         SimpleFlag = true;
                         break;
                     }

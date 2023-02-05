@@ -8,10 +8,21 @@ namespace Multiprog7.Classes
 {
     public class FWForDevice
     {
-        public string FWTitle { get; set; }
-        public string FWVersion { get; set; }
-        public string FWDate { get; set; }
-        public string FWTime { get; set; }
-        public string FWExecution { get; set; }
+        public int ver = 0;
+        public string url;
+        public string path;
+        public string name;
+
+        public FWForDevice(int FWVer, string FWUrl, string FWPath, string FWName)
+        {
+            ver = FWVer;
+            url = FWUrl;
+            path = FWPath;
+            name = FWName;
+        }
+        public FWForDevice(string FWPath)
+        {
+            path = FWPath;
+        }
     }
 }

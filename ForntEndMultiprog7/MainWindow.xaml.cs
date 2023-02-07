@@ -79,13 +79,3 @@ namespace ForntEndMultiprog7
         }
     }
 }
-/*
- <Grid Grid.Row="1" Margin="10">
-            <Border BorderThickness="0,0,0,1" BorderBrush="#EAEEF1" Grid.Row="2" Grid.ColumnSpan="4">
-                <Border.Effect>
-                    <DropShadowEffect BlurRadius="10" Opacity="0.5"></DropShadowEffect>
-                </Border.Effect>
-            </Border>
-        </Grid>
- 
- */

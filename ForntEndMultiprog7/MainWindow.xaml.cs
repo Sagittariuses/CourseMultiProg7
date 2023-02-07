@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,9 +22,15 @@ namespace ForntEndMultiprog7
     /// </summary>
     public partial class MainWindow : Window
     {
+        const string LKDSFrameworkName = "LKDSFramework.dll";
         bool SimpleFlag = false;
         public MainWindow()
         {
+            if (!File.Exists(AppDomain.CurrentDomain.BaseDirectory + LKDSFrameworkName))
+            {
+                MessageBox.Show($"Не найдена библиотека {LKDSFrameworkName}. \nПоместите {LKDSFrameworkName} рядом с исполняемым файлом и повторите попытку.");
+                Process.GetCurrentProcess().Kill();
+            }
             InitializeComponent();
         }
 

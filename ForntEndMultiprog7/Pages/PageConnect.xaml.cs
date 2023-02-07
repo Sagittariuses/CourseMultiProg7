@@ -1,6 +1,8 @@
 ﻿using LKDSFramework;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,10 +24,11 @@ namespace ForntEndMultiprog7.Pages
     public partial class PageConnect : Page
     {
         string FlagCloud = "-cloud", FlagLU = "-lu", FlagPass = "-pass";
-
         List<string> ParamsList = new List<string>();
+        DriverV7 Driver = new DriverV7();
         public PageConnect()
         {
+            
             InitializeComponent();
         }
 
@@ -49,7 +52,19 @@ namespace ForntEndMultiprog7.Pages
                 ParamsToConnect[i] = ParamsList[i];
             }
             App.Args = ParamsToConnect;
-            NavigationService.Navigate(new Pages.PageMain());
+
+            try
+            {
+                var Devices = DeviceV7.FromArgs(App.Args);
+                Driver.AddDevice(ref Devices[0]);
+
+                NavigationService.Navigate(new PageMain());
+            }
+            catch 
+            {
+                MessageBox.Show("Невернные параметры подключения");
+            }
+
         }
     }
 }

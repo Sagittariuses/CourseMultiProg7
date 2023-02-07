@@ -842,6 +842,7 @@ namespace ForntEndMultiprog7.Pages
                             Dispatcher.Invoke(() =>
                             {
                                 UpdateListView = true;
+                                progressValue = Convert.ToInt32(PbMain.Maximum - 1);
                                 OcVMDev.Remove(device);
                                 LVCanDevList.ItemsSource = null;
                                 LVCanDevList.Items.Clear();
@@ -864,6 +865,7 @@ namespace ForntEndMultiprog7.Pages
         #region Other Events
         private void BtnUpdate_Click(object sender, RoutedEventArgs e)
         {
+            ListOfFWList.Clear();
             IsUpdateFW = true;
             BtnUpdate.IsEnabled = false;
             BtnUpdate.Style = (Style)Styles[styleUpdateDisable];

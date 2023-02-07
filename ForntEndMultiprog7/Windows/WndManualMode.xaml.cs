@@ -36,6 +36,13 @@ namespace FrontEndMultiprog7.Windows
         public WndManualMode()
         {
             InitializeComponent();
+            Height = HeightFirst;
+            GridChooseFwFirst.Visibility = Visibility.Visible;
+            GridChooseFwSecond.Visibility = Visibility.Visible;
+            GridChooseFwThird.Visibility = Visibility.Visible;
+            GridFwFirst.Visibility = Visibility.Hidden;
+            GridFwSecond.Visibility = Visibility.Hidden;
+            GridFwThird.Visibility = Visibility.Hidden;
         }
 
         private void BtnMinimezeBox_Click(object sender, RoutedEventArgs e)
@@ -62,10 +69,9 @@ namespace FrontEndMultiprog7.Windows
 
             if (result == true)
             {
-                PageMain.FileFW = opd.FileName;
 
                 string FWVer = "";
-                char[] FWName = opd.SafeFileName.ToCharArray();
+                char[] FWName = opd.SafeFileName.Substring(0, opd.SafeFileName.Length-4).ToCharArray();
                 for (int i = FWName.Length - 1; i > 0; i--)
                 {
                     if (Char.IsDigit(FWName[i]) || FWName[i].Equals('0'))
@@ -76,8 +82,7 @@ namespace FrontEndMultiprog7.Windows
                     {
                         try
                         {
-                            int a = (int)FWName[i];
-                            if (a.Equals(32))
+                            if (Convert.ToInt32(FWName[i]).Equals(32))
                             {
                                 continue;
                             }
@@ -94,27 +99,25 @@ namespace FrontEndMultiprog7.Windows
                 }
                 FWName = FWVer.Reverse().ToArray();
                 FWVer = "";
-
                 foreach (char ch in FWName)
                 {
                     FWVer += ch + ".";
-                }
-                FWVer = FWVer.Trim();
 
+                }
+                FWVer = FWVer.Substring(0,FWVer.Length-1).Trim();
                 Height = HeightSecond;
                 GridChooseFwFirst.Visibility = Visibility.Hidden;
                 GridFwFirst.Visibility = Visibility.Visible;
                 LbFwFilenameFirst.Content = opd.SafeFileName;
                 LbFwVerFirst.Content= FWVer;
-                LbFwDateFirst.Content = File.GetCreationTime(opd.FileName);
-
-
+                LbFwDateFirst.Content = File.GetCreationTime(opd.FileName).ToShortDateString();
+                PageMain.FwFromManualMode = new Multiprog7.Classes.FWForDevice(Convert.ToByte(FWVer.Replace(".", "")), null, opd.FileName, opd.SafeFileName);
             }
         }
 
         private void BtnClearFirmwareFirst_Click(object sender, RoutedEventArgs e)
         {
-            PageMain.FileFW = null;
+            PageMain.FwFromManualMode = null;
             GridChooseFwFirst.Visibility = Visibility.Visible;
             GridFwFirst.Visibility = Visibility.Hidden;
             ChangeHeight();
@@ -133,7 +136,7 @@ namespace FrontEndMultiprog7.Windows
             // Get the selected file name and display in a TextBox 
             if (result == true)
             {
-                PageMain.FileFW = opd.FileName;
+                //PageMain.FileFW = opd.FileName;
 
                 string FWVer = "";
                 char[] FWName = opd.SafeFileName.ToCharArray();
@@ -204,7 +207,7 @@ namespace FrontEndMultiprog7.Windows
             // Get the selected file name and display in a TextBox 
             if (result == true)
             {
-                PageMain.FileFW = opd.FileName;
+                //PageMain.FileFW = opd.FileName;
 
                 string FWVer = "";
                 char[] FWName = opd.SafeFileName.ToCharArray();

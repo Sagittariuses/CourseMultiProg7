@@ -34,14 +34,14 @@ namespace ForntEndMultiprog7.ViewModels
         // int type
         //
         const int PartSize = 928;
-        int PageNum;
+        int PageNum = 1;
 
         //
         // Lkds types
         //
         public static DriverV7 Driver = new DriverV7();
         LKDSFramework.Packs.DataDirect.IAPService.PackV7IAPWriteAns FirmwareLoadPackAns;
-        SubDeviceV7 FocusedDev;
+        SubDeviceV7 FocusedDev = null;
 
         //
         // lists

@@ -9,6 +9,9 @@
         WindowStyle="None" 
         Icon="/Resources/LogoTitleBar.png"
         Title="WndOfflineMode" Height="116" Width="586">
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="10" ResizeBorderThickness="{x:Static SystemParameters.WindowResizeBorderThickness}" />
+    </WindowChrome.WindowChrome>
     <Grid Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="38"></RowDefinition>
@@ -20,28 +23,27 @@
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0">
-            <Grid.ColumnDefinitions>
-            </Grid.ColumnDefinitions>
-
             <Label
 		        VerticalAlignment="Center"
 		        FontSize="14"
-                Margin="30,4,272,4"
+                Margin="30,4,449,4"
                 Foreground="#4F4F4F"
-		        Content="Ручной режим">
+		        Content="Offline режим">
                 <Label.Style>
                     <Style TargetType="Label">
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding IsActive, 
                                                            RelativeSource={RelativeSource AncestorType=Window}}" Value="False">
+                                <Setter Property="Foreground" Value="{DynamicResource WindowTitleBarInactiveText}" />
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
                 </Label.Style>
             </Label>
+
             <Button
                 x:Name="BtnMinimezeBox"
-                Content="–"
+	            Content="–"
                 Grid.Row="0"
                 HorizontalAlignment="Stretch"
                 Margin="506,4,40,0"
@@ -56,7 +58,6 @@
                 <Button.Style>
                     <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
                         <Setter Property="Background" Value="Transparent"/>
-                        <Setter Property="TextBlock.TextAlignment" Value="Center"/>
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="{x:Type Button}">
@@ -98,9 +99,11 @@
                 </Button.Triggers>
 
             </Button>
+
+
             <Button
                 x:Name="BtnCloseBox"
-                Content="✖"
+		        Content="✖"
                 Margin="546,4,0,0"
                 Grid.Row="0"
                 FontSize="12"
@@ -110,11 +113,10 @@
                 HorizontalAlignment="Left"
                 Foreground="#828282"
                 BorderThickness="0"
-                Click="BtnCloseBox_Click" >
+                Click="BtnCloseBox_Click">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
                         <Setter Property="Background" Value="Transparent"/>
-                        <Setter Property="TextBlock.TextAlignment" Value="Center"/>
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="{x:Type Button}">
@@ -142,12 +144,12 @@
                             <BeginStoryboard>
                                 <Storyboard>
                                     <ColorAnimation 
-                                            AutoReverse="False" 
-                                            Duration="0:0:1" 
-                                            From="#D0011B" To="Transparent"
-                                            AccelerationRatio="1" 
-                                            Storyboard.TargetProperty="(StackPanel.Background).(SolidColorBrush.Color)"
-                                            FillBehavior="HoldEnd">
+                                              AutoReverse="False" 
+                                              Duration="0:0:1" 
+                                              From="#D0011B" To="Transparent"
+                                              AccelerationRatio="1" 
+                                              Storyboard.TargetProperty="(StackPanel.Background).(SolidColorBrush.Color)"
+                                              FillBehavior="HoldEnd">
                                     </ColorAnimation>
                                 </Storyboard>
                             </BeginStoryboard>
@@ -155,6 +157,9 @@
                     </EventTrigger>
                 </Button.Triggers>
             </Button>
+
+           
+            
 
         </Grid>
         <Grid Grid.Row="3">

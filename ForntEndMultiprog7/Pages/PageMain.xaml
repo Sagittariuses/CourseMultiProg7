@@ -45,13 +45,14 @@
                             <ColumnDefinition></ColumnDefinition>
                         </Grid.ColumnDefinitions>
                         <Label 
+                            x:Name="LbState"
                             FontWeight="Bold"
                             Content="Анализ"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Left"
                             FontSize="14"
-                            Margin="10,0,0,0"
-                            Foreground="#486FEF"/>
+                            Margin="10,20,0,20"
+                            Foreground="#486FEF" Grid.ColumnSpan="2" Width="303"/>
                         <Grid Grid.Column="4">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition></ColumnDefinition>
@@ -77,7 +78,7 @@
                                 Margin="0,0,0,10"
                                 Foreground="#486FEF"/>
                         </Grid>
-                        
+
                         <Label
                             x:Name="LbProgressPercent"
                             Grid.Column="2"

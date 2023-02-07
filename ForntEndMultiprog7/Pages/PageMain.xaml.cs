@@ -29,6 +29,7 @@ namespace ForntEndMultiprog7.Pages
 
         #region Int type
 
+        const int ExpLen = 4;
         const int PartSize = 928;
         int PageNum;
         int progressValue = 0;
@@ -64,19 +65,20 @@ namespace ForntEndMultiprog7.Pages
         public static string FwArchivePath;
 
         private string labelContentUpdate = "Обновление";
+        private string labelContentPrepareFile = "Подгтовка файла";
         private string labelContentAnalyze = "Анализ";
 
 
         private string styleActiveMode = "BtnActiveMode";
         private string styleInactiveMode = "BtnInactiveMode";
-        private string styleUpdateDisable = "BtnUpdateEnabled";
+        private string styleUpdateDisable = "BtnUpdateDisabled";
         private string styleUpdateEnable = "BtnUpdateEnabled";
         private string selectedStyle;
-        private string FirmwareXMLPath = System.AppDomain.CurrentDomain.BaseDirectory + "\\Firmwares\\";
-        private string FirmwareXMLPathToCheck = System.AppDomain.CurrentDomain.BaseDirectory + "Firmwares\\";
+        private string FirmwareXMLPath = AppDomain.CurrentDomain.BaseDirectory + "\\Firmwares\\";
 
         const string FwXMLToParseName = "firmware.xml";
         string FirmwareFile = null;
+
         #endregion
 
         #region Byte type
@@ -105,7 +107,8 @@ namespace ForntEndMultiprog7.Pages
         bool RebootingTheDeviceFlag = false;
 
         bool IsUpdateFW = false;
-
+        bool IsLiftBlock = false;
+        bool UpdateListView = false;
 
         #endregion
 
@@ -116,6 +119,7 @@ namespace ForntEndMultiprog7.Pages
         #endregion
 
         #region Other types
+
         Stopwatch stopwatch = new Stopwatch();
 
         ResourceDictionary Styles = (ResourceDictionary)Application.LoadComponent(
@@ -124,6 +128,8 @@ namespace ForntEndMultiprog7.Pages
         public ObservableCollection<VMDevice> OcVMDev;
 
         Thread ThreadToParce;
+
+        public static FWForDevice FwFromManualMode = null;
         #endregion
 
         #endregion
@@ -158,9 +164,7 @@ namespace ForntEndMultiprog7.Pages
                 catch { }
             }
             OcVMDev = new ObservableCollection<VMDevice>();
-            //BindingOperations.EnableCollectionSynchronization(OcVMDev, _lock);
             LVCanDevList.ItemsSource = OcVMDev;
-            
         }
 
         #endregion
@@ -228,7 +232,10 @@ namespace ForntEndMultiprog7.Pages
                         ResultLB.Show();
                         TimerToClose.Start();
                     }));*/
-
+                    Dispatcher.Invoke((Action)(() =>
+                    {
+                        LbState.Content = labelContentAnalyze;
+                    }));
                     FinishFlag = true;
                     RebootingTheDeviceFlag = !RebootingTheDeviceFlag;
                     return;
@@ -244,7 +251,10 @@ namespace ForntEndMultiprog7.Pages
                         TimerToClose.Start();
 
                     }));*/
-
+                    Dispatcher.Invoke((Action)(() =>
+                    {
+                        LbState.Content = labelContentAnalyze;
+                    }));
                     FinishFlag = false;
                     RebootingTheDeviceFlag = !RebootingTheDeviceFlag;
                     ActualFWNum++;
@@ -359,17 +369,8 @@ namespace ForntEndMultiprog7.Pages
                                                 }
                                                 else
                                                 {
-                                                    /*this.Invoke(new Action(() =>
-                                                    {
-                                                        *//*LBInfo.Hide();
-                                                        LoadFirmwareBTN.Hide();
-                                                        progressBar2.Hide();
-                                                        ResultLB.Text = "  Версия \nактуальна";
-                                                        LBTimeRes.Visible = false;
-                                                        ResultLB.Show();
-                                                        TimerToClose.Start();*//*
-                                                        
-                                                    }));*/
+                                                    MessageBox.Show("Версия актуальна");
+                                                    ResetProgressBar(1);
                                                     FinishFlag = false;
                                                     ActualFlag = true;
                                                     continue;
@@ -396,12 +397,14 @@ namespace ForntEndMultiprog7.Pages
                         ResultLB.Show();
                         TimerToClose.Start();*//*
                     }));*/
+                    //MessageBox.Show("Версия актуальна");
+                    ResetProgressBar(1);
                     FinishFlag = true;
 
                     return;
                 }
 
-                FileDivision();
+                PreparingTheFile();
 
                 return;
             }
@@ -425,11 +428,10 @@ namespace ForntEndMultiprog7.Pages
                         {
                             try
                             {
-                                /*this.Invoke(new Action(() =>
+                                Dispatcher.Invoke((Action)(() =>
                                 {
-                                    LBInfo.Text = "Поиск свободной страницы";
-
-                                }));*/
+                                    LbState.Content = labelContentUpdate;
+                                }));
                             }
                             catch { }
 
@@ -443,7 +445,7 @@ namespace ForntEndMultiprog7.Pages
                                     Step++;
                                     return;
                                 }
-                                else if ((SelectedPageNum + 1 < PagesCount))
+                                else if (SelectedPageNum + 1 < PagesCount)
                                 {
                                     SelectedPageNum++;
                                     SendReadAsk();
@@ -640,15 +642,11 @@ namespace ForntEndMultiprog7.Pages
 
                                 if (PackReadAns.Data[3] == 170)
                                 {
-                                    /* try
-                                     {
-                                         this.Invoke(new Action(() =>
-                                         {
-                                             LBInfo.Text = "Активация прошивки";
+                                    Dispatcher.Invoke((Action)(() =>
+                                    {
+                                        LbState.Content = "Активация микропрограммы";
 
-                                         }));
-                                     }
-                                     catch { }*/
+                                    }));
 
                                     SendActivateAsk();
                                     Step++;
@@ -693,7 +691,7 @@ namespace ForntEndMultiprog7.Pages
                                 SelectFirmwareBTN.Enabled = true;
                                 LBAndSubDeviceLV.Enabled = true;
                             }));*/
-                            //FwOnPages.Clear();
+                            FwOnPages.Clear();
                             /*FWView(PackStateAns);
                             WriteRecieve(IAPAns);*/
                             //GenerateBTN(IAPAns);
@@ -714,6 +712,9 @@ namespace ForntEndMultiprog7.Pages
                             {
                                 stopwatch.Start();
                                 progressValue++;
+                                if (progressValue > PbMain.Maximum)
+                                    return;
+
                                 string FWVer = "";
                                 char[] FWName = packV7IAPReadAns.PageState.Name.ToCharArray();
                                 for (int i = FWName.Length - 1; i > 0; i--)
@@ -784,6 +785,11 @@ namespace ForntEndMultiprog7.Pages
                                 long sec = time - min * 60;
                                 OcVMDev.Add(VMDev);
                                 //LbRemainingTime.Content = $"{min}мин{sec}сек";
+                                if (UpdateListView)
+                                {
+                                    UpdateListView = false;
+                                    LVCanDevList.ItemsSource = OcVMDev;
+                                }
                                 LbDevCount.Content = CounterDevSubdev.ToString();
                                 LVCanDevList.Items.Refresh();
                                 PbMain.Value = progressValue;
@@ -806,7 +812,6 @@ namespace ForntEndMultiprog7.Pages
 
         private void Driver_OnSubDevChange(SubDeviceV7 dev)
         {
-
             try
             {
 
@@ -828,22 +833,30 @@ namespace ForntEndMultiprog7.Pages
                 //
                 // Update device
                 //
-                if (SubDevices.Count > 0)
+                if (OcVMDev.Count > 0)
                 {
-                    foreach (SubDeviceV7 addedDev in SubDevices)
+                    foreach (var device in OcVMDev)
                     {
-                        if (addedDev.CanID.Equals(dev.CanID))
+                        if (device.CanID.Equals(dev.CanID))
                         {
-                            SubDevices.Remove(addedDev);
-                            SubDevices.Add(dev);
-                            return;
+                            Dispatcher.Invoke(() =>
+                            {
+                                UpdateListView = true;
+                                OcVMDev.Remove(device);
+                                LVCanDevList.ItemsSource = null;
+                                LVCanDevList.Items.Clear();
+                                LVCanDevList.Items.Refresh();
+                                VMDevice.SendReadAsk(dev.CanID);
+                            });
+                            break;
                         }
                     }
                 }
-
-                SubDevices.Add(dev);
             }
-            catch { }
+            catch (Exception ex) 
+            {
+                var a = ex.ToString();
+            }
         }
 
         #endregion
@@ -852,6 +865,9 @@ namespace ForntEndMultiprog7.Pages
         private void BtnUpdate_Click(object sender, RoutedEventArgs e)
         {
             IsUpdateFW = true;
+            BtnUpdate.IsEnabled = false;
+            BtnUpdate.Style = (Style)Styles[styleUpdateDisable];
+            FirmwaresToDownload.Clear();
             if (OnlineActive)
             {
                 if (!Directory.Exists(FirmwareXMLPath))
@@ -871,64 +887,70 @@ namespace ForntEndMultiprog7.Pages
                     }
                     catch
                     {
-                        break;
                         Console.WriteLine("Connection error");
+                        break;
                     }
                 }
                 ParcingFirmware();
                 SendProcessorAsk();
 
 
-            } else if (OfflineActive)
+            } 
+            else if (OfflineActive)
             {
-                // Нужно сверстать окно, подготовка к диплому
-                //
                 // 
+                // Подготовка к диплому
+                //
                 WndOfflineMode wndOfflineMode = new WndOfflineMode();
                 wndOfflineMode.ShowDialog();
             }
             else if (ManualActive)
             {
-                MessageBox.Show(FileExt);
                 WndManualMode wndManualMode = new WndManualMode();
                 wndManualMode.ShowDialog();
 
                 if (WndManualMode.IsApplied)
                 {
-                    //
-                    //  Начать обновление
-                    //
+                    PreparingTheFile();
                 }
             }
         }
 
         private void LVCanDevList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (PbMain.Value.Equals(PbMain.Maximum))
+            if (PbMain.Value.Equals(PbMain.Maximum) || PbMain.Value.Equals(0))
             {
-                if (!LVCanDevList.SelectedItem.Equals(null))
+                try
                 {
-                    BtnUpdate.IsEnabled = true;
-                    BtnUpdate.Style = (Style)Styles[styleUpdateEnable];
-                    SelectedDevOrSubDevCANID = (byte)(LVCanDevList.SelectedItem as VMDevice).CanID;
-                    CANID = SelectedDevOrSubDevCANID;
-                    opt.CanID = SelectedDevOrSubDevCANID;
-                    if (SelectedDevOrSubDevCANID.Equals(0))
+                    if (!LVCanDevList.SelectedItem.Equals(null))
                     {
-                        Driver.Devices[0].SendPack(new LKDSFramework.Packs.DataDirect.IAPService.PackV7IAPStateAsk());
-                        //IsLiftBlock = true;
+                        BtnUpdate.IsEnabled = true;
+                        BtnUpdate.Style = (Style)Styles[styleUpdateEnable];
+                        SelectedDevOrSubDevCANID = (byte)(LVCanDevList.SelectedItem as VMDevice).CanID;
+                        CANID = SelectedDevOrSubDevCANID;
+                        opt.CanID = SelectedDevOrSubDevCANID;
+                        if (SelectedDevOrSubDevCANID.Equals(0))
+                        {
+                            Driver.Devices[0].SendPack(new LKDSFramework.Packs.DataDirect.IAPService.PackV7IAPStateAsk());
+                            IsLiftBlock = true;
+                        }
+                        else
+                        {
+                            Driver.Devices[0].SubDevices[SelectedDevOrSubDevCANID].SendPack(new LKDSFramework.Packs.DataDirect.IAPService.PackV7IAPStateAsk());
+                            IsLiftBlock = false;
+                        }
                     }
                     else
                     {
-                        Driver.Devices[0].SubDevices[SelectedDevOrSubDevCANID].SendPack(new LKDSFramework.Packs.DataDirect.IAPService.PackV7IAPStateAsk());
-                        //IsLiftBlock = false;
+                        BtnUpdate.IsEnabled = false;
+                        BtnUpdate.Style = (Style)Styles[styleUpdateDisable];
                     }
                 }
-                else
+                catch
                 {
-                    BtnUpdate.IsEnabled = false;
-                    BtnUpdate.Style = (Style)Styles[styleUpdateDisable];
+
                 }
+                
             }
 
             
@@ -936,12 +958,16 @@ namespace ForntEndMultiprog7.Pages
 
         private void PbMain_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            if (LVCanDevList.Items.Count.Equals(Convert.ToInt32(LbDevCount.Content)))
+            /*if (LVCanDevList.Items.Count.Equals(Convert.ToInt32(LbDevCount.Content)))
             {
                 PbMain.Value = PbMain.Maximum;
-            }
+            }*/
         }
 
+
+        #endregion
+
+        #region Functions & procedures
         void ParcingFirmware()
         {
             StreamReader file = new StreamReader(FirmwareXMLPath + FwXMLToParseName, Encoding.GetEncoding(1251));
@@ -952,18 +978,15 @@ namespace ForntEndMultiprog7.Pages
 
         }
 
-        void FileDivision()
+        void PreparingTheFile()
         {
             FirstWriteFlag = true;
             EmptyPageFound = false;
             Step = 0;
-            /*this.Invoke(new Action(() =>
+            Dispatcher.Invoke(() =>
             {
-                LBInfo.Text = InfoStrs[0];
-            }));
-            LoadFirmwareBTN.Enabled = false;*/
-            const int ExpLen = 4;
-
+                LbState.Content = labelContentPrepareFile;
+            });
             for (int i = 0; i < FirmwaresToDownload.Count && FirmwaresToDownload[0].name != null; i++)
             {
                 if (FirmwaresToDownload.Count > 1)
@@ -1040,65 +1063,76 @@ namespace ForntEndMultiprog7.Pages
             //
             // File Division
             //
-            foreach (FWForDevice FWFile in FirmwaresToDownload)
+            if (FirmwaresToDownload.Count > 0)
             {
-                List<byte[]> FirmwareFragments = new List<byte[]>();
-                byte[] SelectedFile = null;
-                try
+                foreach (FWForDevice FWFile in FirmwaresToDownload)
                 {
-                    SelectedFile = File.ReadAllBytes(FWFile.path);
-
+                    FileDivision(FWFile);
                 }
-                catch
-                {
-/*                    LoadFirmwareBTN.Hide();
-                    progressBar2.Hide();
-                    ResultLB.Text = " Отсутвует \n    файл";
-                    ResultLB.ForeColor = Color.Red;
-                    LBInfo.Hide();
-                    LBTimeRes.Hide();
-                    ResultLB.Show();
-                    TimerToClose.Start();*/
-                    FinishFlag = true;
-                    return;
-                }
-                int ActualPosition = 0;
-                for (int i = 0; i < SelectedFile.Length; i += PartSize)
-                {
-                    byte[] PartOfFile = new byte[PartSize];
+            }
+            else
+            {
+                FileDivision(FwFromManualMode);
+            }
 
-                    if (PartSize * FirmwareFragments.Count + PartSize > SelectedFile.Length)
-                    {
-                        try
-                        {
-                            PartOfFile = new byte[SelectedFile.Length - PartSize * FirmwareFragments.Count];
+            ResetProgressBar(ListOfFWList[ActualFWNum].Count);
+            
+            SendStateAsk();
+            Step++;
+        }
 
-                            for (int j = 0; j < PartOfFile.Length; j++)
-                            {
-                                PartOfFile[j] = SelectedFile[ActualPosition++];
-                            }
-                        }
-                        catch { }
-                    }
-                    else
+        void FileDivision(FWForDevice FWFile)
+        {
+            List<byte[]> FirmwareFragments = new List<byte[]>();
+            byte[] SelectedFile;
+            try
+            {
+                SelectedFile = File.ReadAllBytes(FWFile.path);
+
+            }
+            catch
+            {
+                MessageBox.Show("Отсутвует файл");
+                FinishFlag = true;
+                return;
+            }
+            int ActualPosition = 0;
+            for (int i = 0; i < SelectedFile.Length; i += PartSize)
+            {
+                byte[] PartOfFile = new byte[PartSize];
+
+                if (PartSize * FirmwareFragments.Count + PartSize > SelectedFile.Length)
+                {
+                    try
                     {
-                        for (int j = 0; j < PartSize && ActualPosition != SelectedFile.Length; j++)
+                        PartOfFile = new byte[SelectedFile.Length - PartSize * FirmwareFragments.Count];
+
+                        for (int j = 0; j < PartOfFile.Length; j++)
                         {
                             PartOfFile[j] = SelectedFile[ActualPosition++];
                         }
                     }
-                    FirmwareFragments.Add(PartOfFile);
+                    catch { }
                 }
-                ListOfFWList.Add(FirmwareFragments);
+                else
+                {
+                    for (int j = 0; j < PartSize && ActualPosition != SelectedFile.Length; j++)
+                    {
+                        PartOfFile[j] = SelectedFile[ActualPosition++];
+                    }
+                }
+                FirmwareFragments.Add(PartOfFile);
             }
-            Dispatcher.Invoke((Action)(() => 
+            ListOfFWList.Add(FirmwareFragments);
+        }
+
+        void ResetProgressBar(int Max)
+        {
+            Dispatcher.Invoke(() =>
             {
                 PbMain.Value = 0;
-                PbMain.Maximum = ListOfFWList[ActualFWNum].Count;
-            }));
-            
-            SendStateAsk();
-            Step++;
+                PbMain.Maximum = Max;
+            });
         }
         #endregion
 
